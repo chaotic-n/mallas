@@ -61,6 +61,88 @@ function cerrarSesion() {
   location.reload();
 }
 
+function cargarMalla(data, usuario) {
+  document.getElementById("login-form").style.display = "none";
+  document.getElementById("registro-form").style.display = "none";
+  document.getElementById("recuperar-form").style.display = "none";
+  document.getElementById("contenido-malla").style.display = "block";
+
+  document.getElementById("saludo").textContent = `👋 ¡Hola, ${data.nombreCompleto}!`;
+
+  const grid = document.getElementById("malla-grid");
+  const resumen = document.getElementById("resumen-creditos");
+  grid.innerHTML = "";
+
+  const progreso = data.progreso || {};
+  const notas = data.notas || {};
+
+  Object.keys(malla).forEach((semestre) => {
+    const columna = document.createElement("div");
+    columna.className = "semestre";
+
+    const h2 = document.createElement("h2");
+    h2.textContent = semestre;
+    columna.appendChild(h2);
+
+    malla[semestre].forEach((ramo) => {
+      const div = document.createElement("div");
+      div.className = "ramo";
+      div.textContent = `${ramo.nombre} (${ramo.creditos})`;
+      const clave = `${semestre} - ${ramo.nombre}`;
+
+      if (progreso[clave]) div.classList.add("checked");
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = "Nota (1-7)";
+      input.value = notas[clave] || "";
+      input.addEventListener("input", () => {
+        const valor = input.value.replace(",", ".");
+        const nota = parseFloat(valor);
+        if (!isNaN(nota) && nota >= 1 && nota <= 7) {
+          notas[clave] = nota;
+        } else {
+          delete notas[clave];
+        }
+        guardar(usuario, progreso, notas);
+        actualizarPromedios(usuario, resumen);
+      });
+      input.addEventListener("click", (e) => e.stopPropagation());
+
+      if (progreso[clave]) div.appendChild(input);
+
+      div.addEventListener("click", () => {
+        div.classList.toggle("checked");
+        const checked = div.classList.contains("checked");
+        progreso[clave] = checked;
+
+        if (checked && !div.contains(input)) div.appendChild(input);
+        else if (!checked && div.contains(input)) {
+          div.removeChild(input);
+          delete notas[clave];
+        }
+
+        guardar(usuario, progreso, notas);
+        actualizarCreditos(usuario, resumen);
+        actualizarPromedios(usuario, resumen);
+      });
+
+      columna.appendChild(div);
+    });
+
+    const promedioDiv = document.createElement("div");
+    promedioDiv.className = "promedio-semestre";
+    promedioDiv.id = `promedio-${semestre}`;
+    promedioDiv.textContent = "📘 Promedio Semestre: -";
+    columna.appendChild(promedioDiv);
+
+    grid.appendChild(columna);
+  });
+
+  actualizarCreditos(usuario, resumen);
+  actualizarPromedios(usuario, resumen);
+}
+
 const malla = {
   "1° Semestre": [
     { nombre: "TRANSFORMACIÓN DIGITAL", creditos: 8 },
