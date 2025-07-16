@@ -10,10 +10,11 @@
   --highlight-dark: #37314b;
   --checked: #a3ffd6;
   --checked-dark: #5aeeaf;
-  --card-light: #fff;
-  --card-dark: #2b2839;
-  --shadow: rgba(0, 0, 0, 0.05);
+  --card-light: rgba(255, 255, 255, 0.7);
+  --card-dark: rgba(43, 40, 57, 0.7);
+  --shadow: rgba(0, 0, 0, 0.1);
   --font: 'Inter', sans-serif;
+  --glass-blur: blur(12px);
 }
 
 body {
@@ -22,6 +23,7 @@ body {
   background-color: var(--bg-light);
   color: var(--text-light);
   transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
 
 body.dark {
@@ -29,24 +31,42 @@ body.dark {
   color: var(--text-dark);
 }
 
+/* Fondo de partículas */
+#tsparticles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.overlay {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+/* Header */
 header {
-  background-color: var(--primary);
-  color: white;
-  padding: 2.5rem 1rem;
   text-align: center;
-  box-shadow: 0 2px 8px var(--shadow);
+  padding: 2rem 1rem;
+}
+
+header .logo {
+  width: 140px;
+  margin-bottom: 1rem;
 }
 
 header h1 {
+  margin: 0;
   font-size: 2rem;
-  margin-bottom: 0.5rem;
+  color: var(--primary);
 }
 
 header p {
   font-size: 1rem;
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
+/* Botón modo oscuro */
 .theme-toggle {
   position: fixed;
   top: 1rem;
@@ -67,23 +87,69 @@ header p {
   background: #7046e5;
 }
 
+/* Formulario inicial */
+.form-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 2rem;
+  background-color: var(--card-light);
+  backdrop-filter: var(--glass-blur);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px var(--shadow);
+  text-align: center;
+}
+
+body.dark .form-container {
+  background-color: var(--card-dark);
+}
+
+.form-container input {
+  display: block;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.form-container button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
 .malla-container {
   padding: 2rem;
-  max-width: 900px;
-  margin: auto;
+  max-width: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
 }
 
+/* Grid horizontal */
 .grid {
   display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  flex-direction: row;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
 }
 
+/* Semestre bloque */
 .semestre {
+  min-width: 280px;
+  flex: 0 0 auto;
   background-color: var(--card-light);
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px var(--shadow);
+  backdrop-filter: var(--glass-blur);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px var(--shadow);
   transition: background-color 0.3s ease;
 }
 
@@ -92,18 +158,26 @@ body.dark .semestre {
 }
 
 .semestre h2 {
-  margin-top: 0;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: var(--primary);
   margin-bottom: 1rem;
 }
 
+.promedio-semestre {
+  margin-top: 1rem;
+  font-weight: bold;
+  text-align: center;
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+/* Ramos */
 .ramo {
   background-color: var(--card-light);
   border: 2px solid #e0e0e0;
   padding: 1rem;
-  border-radius: 10px;
-  font-size: 0.9rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
   font-weight: 500;
   color: var(--text-light);
   cursor: pointer;
@@ -111,13 +185,13 @@ body.dark .semestre {
   box-shadow: 0 2px 5px var(--shadow);
   user-select: none;
   margin-bottom: 0.6rem;
+  position: relative;
 }
 
 body.dark .ramo {
   background-color: var(--card-dark);
   color: var(--text-dark);
   border-color: #3f3b5b;
-  box-shadow: none;
 }
 
 .ramo:hover {
@@ -131,9 +205,9 @@ body.dark .ramo:hover {
 
 .ramo.checked {
   background-color: var(--checked);
-  text-decoration: line-through;
   color: #222;
-  opacity: 0.85;
+  opacity: 0.95;
+  text-decoration: none;
 }
 
 body.dark .ramo.checked {
@@ -141,27 +215,50 @@ body.dark .ramo.checked {
   color: #000;
 }
 
+/* Campo de nota */
+.ramo input[type=\"text\"] {
+  margin-top: 0.4rem;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+  outline: none;
+  background: #f7f7f7;
+}
+
+body.dark .ramo input[type=\"text\"] {
+  background: #444;
+  color: white;
+}
+
+/* Créditos y promedio general */
 .creditos {
   margin-top: 2rem;
   font-size: 1.1rem;
   font-weight: 600;
   text-align: center;
-  background-color: #f2f2f2;
-  padding: 1rem;
-  border-radius: 10px;
+  background-color: var(--card-light);
+  backdrop-filter: var(--glass-blur);
+  padding: 1.2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 10px var(--shadow);
 }
 
 body.dark .creditos {
-  background-color: #2d2a3a;
+  background-color: var(--card-dark);
   color: var(--text-dark);
 }
 
 @media (max-width: 768px) {
-  .malla-container {
-    padding: 1rem;
+  .semestre {
+    min-width: 240px;
   }
 
-  .semestre h2 {
-    font-size: 1.1rem;
+  .form-container {
+    padding: 1.5rem;
   }
 }
