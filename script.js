@@ -63,7 +63,21 @@ const malla = {
 
 const grid = document.getElementById("malla-grid");
 const resumen = document.getElementById("resumen-creditos");
+const saludo = document.getElementById("saludo");
 const progreso = JSON.parse(localStorage.getItem("malla-rendida") || "{}");
+const notas = JSON.parse(localStorage.getItem("malla-notas") || "{}");
+
+function guardarNombre() {
+  const nombre = document.getElementById("nombre").value.trim();
+  const apellido = document.getElementById("apellido").value.trim();
+  if (!nombre || !apellido) return alert("Completa ambos campos.");
+
+  const nombreCompleto = `${nombre} ${apellido}`;
+  localStorage.setItem("malla-nombre", nombreCompleto);
+  document.getElementById("form-nombre").style.display = "none";
+  document.getElementById("contenido-malla").style.display = "block";
+  saludo.textContent = `👋 ¡Hola, ${nombreCompleto}!`;
+}
 
 function crearMalla() {
   grid.innerHTML = "";
@@ -76,7 +90,8 @@ function crearMalla() {
     h2.textContent = semestre;
     columna.appendChild(h2);
 
-    malla[semestre].forEach((ramo) => {
+    const ramos = malla[semestre];
+    ramos.forEach((ramo) => {
       const div = document.createElement("div");
       div.className = "ramo";
       div.textContent = `${ramo.nombre} (${ramo.creditos})`;
@@ -85,24 +100,56 @@ function crearMalla() {
       div.dataset.creditos = ramo.creditos;
 
       const clave = `${semestre} - ${ramo.nombre}`;
-      if (progreso[clave]) {
-        div.classList.add("checked");
-      }
+      if (progreso[clave]) div.classList.add("checked");
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = "Nota (1-7)";
+      input.value = notas[clave] || "";
+      input.addEventListener("input", () => {
+        const val = input.value.replace(",", ".");
+        const num = parseFloat(val);
+        if (!isNaN(num) && num >= 1 && num <= 7) {
+          notas[clave] = num;
+        } else {
+          delete notas[clave];
+        }
+        localStorage.setItem("malla-notas", JSON.stringify(notas));
+        actualizarPromedios();
+      });
+
+      if (progreso[clave]) div.appendChild(input);
 
       div.addEventListener("click", () => {
         div.classList.toggle("checked");
-        progreso[clave] = div.classList.contains("checked");
+        const checked = div.classList.contains("checked");
+        progreso[clave] = checked;
         localStorage.setItem("malla-rendida", JSON.stringify(progreso));
+        if (checked && !div.contains(input)) {
+          div.appendChild(input);
+        } else if (!checked && div.contains(input)) {
+          div.removeChild(input);
+          delete notas[clave];
+          localStorage.setItem("malla-notas", JSON.stringify(notas));
+        }
         actualizarCreditos();
+        actualizarPromedios();
       });
 
       columna.appendChild(div);
     });
 
+    const promedioSem = document.createElement("div");
+    promedioSem.className = "promedio-semestre";
+    promedioSem.id = `promedio-${semestre}`;
+    promedioSem.textContent = "📘 Promedio Semestre: -";
+    columna.appendChild(promedioSem);
+
     grid.appendChild(columna);
   });
 
   actualizarCreditos();
+  actualizarPromedios();
 }
 
 function actualizarCreditos() {
@@ -118,7 +165,38 @@ function actualizarCreditos() {
     }
   });
 
-  resumen.textContent = `Créditos completados: ${completados} / ${total}`;
+  resumen.querySelector("span#promedio-general").textContent = "-";
+  resumen.childNodes[0].nodeValue = `Créditos completados: ${completados} / ${total}\n`;
+}
+
+function actualizarPromedios() {
+  let sumaTotal = 0;
+  let cantidadNotas = 0;
+
+  Object.keys(malla).forEach((semestre) => {
+    let suma = 0;
+    let count = 0;
+
+    malla[semestre].forEach((ramo) => {
+      const clave = `${semestre} - ${ramo.nombre}`;
+      if (progreso[clave] && notas[clave]) {
+        suma += notas[clave];
+        count++;
+      }
+    });
+
+    const promedio = count > 0 ? (suma / count).toFixed(2) : "-";
+    const promedioDiv = document.getElementById(`promedio-${semestre}`);
+    promedioDiv.textContent = `📘 Promedio Semestre: ${promedio}`;
+
+    if (count > 0) {
+      sumaTotal += suma;
+      cantidadNotas += count;
+    }
+  });
+
+  const promedioFinal = cantidadNotas > 0 ? (sumaTotal / cantidadNotas).toFixed(2) : "-";
+  document.getElementById("promedio-general").textContent = promedioFinal;
 }
 
 function toggleTheme() {
@@ -126,9 +204,15 @@ function toggleTheme() {
   localStorage.setItem("malla-tema", document.body.classList.contains("dark") ? "dark" : "light");
 }
 
-// Restaurar tema si estaba guardado
 if (localStorage.getItem("malla-tema") === "dark") {
   document.body.classList.add("dark");
+}
+
+const nombreGuardado = localStorage.getItem("malla-nombre");
+if (nombreGuardado) {
+  document.getElementById("form-nombre").style.display = "none";
+  document.getElementById("contenido-malla").style.display = "block";
+  saludo.textContent = `👋 ¡Hola, ${nombreGuardado}!`;
 }
 
 crearMalla();
