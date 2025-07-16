@@ -65,8 +65,7 @@ const grid = document.getElementById("malla-grid");
 const resumen = document.getElementById("resumen-creditos");
 const saludo = document.getElementById("saludo");
 const progreso = JSON.parse(localStorage.getItem("malla-rendida") || "{}");
-const notas = JSON.parse(localStorage.getItem("malla-notas") || "{}");
-
+const notas = JSON.parse(localStorage.getItem("malla-notas") || {});
 function guardarNombre() {
   const nombre = document.getElementById("nombre").value.trim();
   const apellido = document.getElementById("apellido").value.trim();
@@ -106,6 +105,7 @@ function crearMalla() {
       input.type = "text";
       input.placeholder = "Nota (1-7)";
       input.value = notas[clave] || "";
+
       input.addEventListener("input", () => {
         const val = input.value.replace(",", ".");
         const num = parseFloat(val);
@@ -118,6 +118,8 @@ function crearMalla() {
         actualizarPromedios();
       });
 
+      input.addEventListener("click", (e) => e.stopPropagation());
+
       if (progreso[clave]) div.appendChild(input);
 
       div.addEventListener("click", () => {
@@ -125,6 +127,7 @@ function crearMalla() {
         const checked = div.classList.contains("checked");
         progreso[clave] = checked;
         localStorage.setItem("malla-rendida", JSON.stringify(progreso));
+
         if (checked && !div.contains(input)) {
           div.appendChild(input);
         } else if (!checked && div.contains(input)) {
@@ -132,6 +135,7 @@ function crearMalla() {
           delete notas[clave];
           localStorage.setItem("malla-notas", JSON.stringify(notas));
         }
+
         actualizarCreditos();
         actualizarPromedios();
       });
@@ -151,7 +155,6 @@ function crearMalla() {
   actualizarCreditos();
   actualizarPromedios();
 }
-
 function actualizarCreditos() {
   const ramos = document.querySelectorAll(".ramo");
   let total = 0;
