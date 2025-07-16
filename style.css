@@ -108,10 +108,12 @@ body.dark .form-container {
 /* Malla */
 .malla-container {
   display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
   padding-bottom: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .semestre {
