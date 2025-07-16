@@ -64,18 +64,78 @@ const malla = {
 const grid = document.getElementById("malla-grid");
 const resumen = document.getElementById("resumen-creditos");
 const saludo = document.getElementById("saludo");
-const progreso = JSON.parse(localStorage.getItem("malla-rendida") || "{}");
-const notas = JSON.parse(localStorage.getItem("malla-notas") || {});
-function guardarNombre() {
-  const nombre = document.getElementById("nombre").value.trim();
-  const apellido = document.getElementById("apellido").value.trim();
-  if (!nombre || !apellido) return alert("Completa ambos campos.");
+const logoutBtn = document.getElementById("logout-btn");
+const loginForm = document.getElementById("login-form");
+const registroForm = document.getElementById("registro-form");
+const recuperarForm = document.getElementById("recuperar-form");
 
-  const nombreCompleto = `${nombre} ${apellido}`;
-  localStorage.setItem("malla-nombre", nombreCompleto);
-  document.getElementById("form-nombre").style.display = "none";
+let currentUser = localStorage.getItem("malla-nombre") || null;
+let progreso = currentUser
+  ? JSON.parse(localStorage.getItem(`malla-rendida-${currentUser}`) || "{}")
+  : {};
+let notas = currentUser
+  ? JSON.parse(localStorage.getItem(`malla-notas-${currentUser}`) || "{}")
+  : {};
+
+function mostrarRegistro() {
+  loginForm.style.display = "none";
+  registroForm.style.display = "block";
+  recuperarForm.style.display = "none";
+}
+
+function mostrarLogin() {
+  loginForm.style.display = "block";
+  registroForm.style.display = "none";
+  recuperarForm.style.display = "none";
+}
+
+function mostrarRecuperacion() {
+  loginForm.style.display = "none";
+  registroForm.style.display = "none";
+  recuperarForm.style.display = "block";
+}
+
+function registrar() {
+  const usuario = document.getElementById("reg-usuario").value.trim();
+  const pass = document.getElementById("reg-pass").value;
+  const email = document.getElementById("reg-email").value.trim();
+  if (!usuario || !pass || !email) return alert("Completa todos los campos.");
+  const users = JSON.parse(localStorage.getItem("malla-usuarios") || "{}");
+  if (users[usuario]) return alert("El usuario ya existe.");
+  users[usuario] = { pass, email };
+  localStorage.setItem("malla-usuarios", JSON.stringify(users));
+  alert("Cuenta creada. Inicia sesi\u00f3n");
+  mostrarLogin();
+}
+
+function login() {
+  const usuario = document.getElementById("login-usuario").value.trim();
+  const pass = document.getElementById("login-pass").value;
+  const users = JSON.parse(localStorage.getItem("malla-usuarios") || "{}");
+  if (!users[usuario] || users[usuario].pass !== pass)
+    return alert("Credenciales incorrectas");
+  localStorage.setItem("malla-nombre", usuario);
+  currentUser = usuario;
+  progreso = JSON.parse(localStorage.getItem(`malla-rendida-${currentUser}`) || "{}");
+  notas = JSON.parse(localStorage.getItem(`malla-notas-${currentUser}`) || "{}");
+  loginForm.style.display = "none";
   document.getElementById("contenido-malla").style.display = "block";
-  saludo.textContent = `👋 ¡Hola, ${nombreCompleto}!`;
+  saludo.textContent = `👋 \u00a1Hola, ${usuario}!`;
+  logoutBtn.style.display = "block";
+  crearMalla();
+}
+
+function recuperarContrasena() {
+  const email = document.getElementById("rec-email").value.trim();
+  const users = JSON.parse(localStorage.getItem("malla-usuarios") || "{}");
+  const entry = Object.entries(users).find(([u, d]) => d.email === email);
+  if (!entry) {
+    alert("Correo no encontrado");
+  } else {
+    const [usuario, datos] = entry;
+    alert(`Usuario: ${usuario}\nContrase\u00f1a: ${datos.pass}`);
+  }
+  mostrarLogin();
 }
 
 function crearMalla() {
@@ -114,7 +174,10 @@ function crearMalla() {
         } else {
           delete notas[clave];
         }
-        localStorage.setItem("malla-notas", JSON.stringify(notas));
+        localStorage.setItem(
+          `malla-notas-${currentUser}`,
+          JSON.stringify(notas)
+        );
         actualizarPromedios();
       });
 
@@ -126,14 +189,20 @@ function crearMalla() {
         div.classList.toggle("checked");
         const checked = div.classList.contains("checked");
         progreso[clave] = checked;
-        localStorage.setItem("malla-rendida", JSON.stringify(progreso));
+        localStorage.setItem(
+          `malla-rendida-${currentUser}`,
+          JSON.stringify(progreso)
+        );
 
         if (checked && !div.contains(input)) {
           div.appendChild(input);
         } else if (!checked && div.contains(input)) {
           div.removeChild(input);
           delete notas[clave];
-          localStorage.setItem("malla-notas", JSON.stringify(notas));
+          localStorage.setItem(
+            `malla-notas-${currentUser}`,
+            JSON.stringify(notas)
+          );
         }
 
         actualizarCreditos();
@@ -213,9 +282,21 @@ if (localStorage.getItem("malla-tema") === "dark") {
 
 const nombreGuardado = localStorage.getItem("malla-nombre");
 if (nombreGuardado) {
-  document.getElementById("form-nombre").style.display = "none";
+  loginForm.style.display = "none";
+  registroForm.style.display = "none";
+  recuperarForm.style.display = "none";
   document.getElementById("contenido-malla").style.display = "block";
   saludo.textContent = `👋 ¡Hola, ${nombreGuardado}!`;
+  logoutBtn.style.display = "block";
+  crearMalla();
+} else {
+  mostrarLogin();
+  logoutBtn.style.display = "none";
 }
 
-crearMalla();
+function cerrarSesion() {
+  const theme = localStorage.getItem("malla-tema");
+  localStorage.removeItem("malla-nombre");
+  if (theme) localStorage.setItem("malla-tema", theme);
+  location.reload();
+}

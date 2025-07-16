@@ -11,6 +11,7 @@
   <div id="tsparticles"></div>
   <div class="overlay">
     <div class="theme-toggle" onclick="toggleTheme()">🌙 Cambiar tema</div>
+    <div id="logout-btn" class="logout-btn" onclick="cerrarSesion()">Cerrar sesión</div>
 
     <div class="wrapper">
 
@@ -20,11 +21,44 @@
         <p>Malla curricular interactiva · Ingeniería en Conectividad y Redes</p>
       </header>
 
-      <section id="form-nombre" class="form-container">
-        <h2>Ingresa tu nombre</h2>
-        <input type="text" id="nombre" placeholder="Nombre" />
-        <input type="text" id="apellido" placeholder="Apellido" />
-        <button onclick="guardarNombre()">Ingresar</button>
+      <section id="login-form" class="form-container">
+        <h2>Iniciar sesión</h2>
+        <input type="text" id="login-usuario" placeholder="Usuario" />
+        <input type="password" id="login-pass" placeholder="Contraseña" />
+        <button onclick="login()">Ingresar</button>
+        <p>
+          ¿No tienes cuenta?
+          <a href="#" onclick="mostrarRegistro(); return false;">Regístrate</a>
+        </p>
+        <p>
+          <a href="#" onclick="mostrarRecuperacion(); return false;"
+            >Olvidé mi contraseña</a
+          >
+        </p>
+      </section>
+
+      <section id="registro-form" class="form-container" style="display: none;">
+        <h2>Crear cuenta</h2>
+        <input type="text" id="reg-usuario" placeholder="Usuario" />
+        <input type="password" id="reg-pass" placeholder="Contraseña" />
+        <input
+          type="email"
+          id="reg-email"
+          placeholder="Correo de recuperación"
+        />
+        <button onclick="registrar()">Registrarse</button>
+        <p><a href="#" onclick="mostrarLogin(); return false;">Volver</a></p>
+      </section>
+
+      <section
+        id="recuperar-form"
+        class="form-container"
+        style="display: none;"
+      >
+        <h2>Recuperar contraseña</h2>
+        <input type="email" id="rec-email" placeholder="Correo registrado" />
+        <button onclick="recuperarContrasena()">Recuperar</button>
+        <p><a href="#" onclick="mostrarLogin(); return false;">Volver</a></p>
       </section>
 
       <div id="contenido-malla" style="display: none;">

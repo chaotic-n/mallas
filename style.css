@@ -87,7 +87,27 @@ header p {
   transition: background 0.3s ease;
 }
 
+.logout-btn {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px var(--shadow);
+  z-index: 10;
+  transition: background 0.3s ease;
+}
+
 .theme-toggle:hover {
+  background: #7046e5;
+}
+
+.logout-btn:hover {
   background: #7046e5;
 }
 
@@ -130,15 +150,12 @@ body.dark .form-container {
 
 .malla-container {
   padding: 2rem 0;
-  overflow-x: auto;
-  scroll-behavior: smooth;
 }
 
 .grid {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
   gap: 1.5rem;
-  overflow-x: auto;
   padding-bottom: 1rem;
 }
 
