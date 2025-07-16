@@ -1,14 +1,14 @@
+function mostrarFormulario(tipo) {
+  document.getElementById("login-form").style.display = tipo === "login" ? "block" : "none";
+  document.getElementById("registro-form").style.display = tipo === "registro" ? "block" : "none";
+  document.getElementById("recuperar-form").style.display = tipo === "recuperar" ? "block" : "none";
+}
+
 async function hashPassword(password) {
   const encoder = new TextEncoder();
   const data = encoder.encode(password);
   const hash = await crypto.subtle.digest("SHA-256", data);
   return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, "0")).join("");
-}
-
-function mostrarFormulario(tipo) {
-  document.getElementById("login-form").style.display = tipo === "login" ? "block" : "none";
-  document.getElementById("registro-form").style.display = tipo === "registro" ? "block" : "none";
-  document.getElementById("recuperar-form").style.display = tipo === "recuperar" ? "block" : "none";
 }
 
 async function registrarUsuario() {
@@ -60,7 +60,7 @@ function cerrarSesion() {
   localStorage.removeItem("usuario-activo");
   location.reload();
 }
-// Malla curricular
+
 const malla = {
   "1° Semestre": [
     { nombre: "TRANSFORMACIÓN DIGITAL", creditos: 8 },
@@ -79,94 +79,51 @@ const malla = {
     { nombre: "HABILIDADES DE COMUNICACIÓN EFECTIVA", creditos: 8 },
     { nombre: "FUNDAMENTOS DE ANTROPOLOGÍA", creditos: 4 }
   ],
-  // Puedes continuar con 3° a 8° semestre aquí...
+  "3° Semestre": [
+    { nombre: "ROUTING Y SWITCHING", creditos: 10 },
+    { nombre: "INTRODUCCIÓN A CIBERSEGURIDAD", creditos: 8 },
+    { nombre: "ADMINISTRACIÓN SISTEMA OPERATIVO ENTERPRISE", creditos: 10 },
+    { nombre: "MENTALIDAD EMPRENDEDORA", creditos: 6 },
+    { nombre: "INGLÉS BÁSICO I", creditos: 8 },
+    { nombre: "MATEMÁTICA APLICADA", creditos: 8 },
+    { nombre: "ÉTICA PARA EL TRABAJO", creditos: 4 }
+  ],
+  "4° Semestre": [
+    { nombre: "REDES ESCALABLES Y WAN", creditos: 10 },
+    { nombre: "SOLUCIONES INALÁMBRICAS", creditos: 8 },
+    { nombre: "OPERACIONES EN CIBERSEGURIDAD (CCNA Cyber Ops)", creditos: 8 },
+    { nombre: "SERVICIOS CONVERGENTES (Voz, Video y Datos)", creditos: 8 },
+    { nombre: "INGLÉS BÁSICO II", creditos: 8 },
+    { nombre: "ESTADÍSTICA DESCRIPTIVA", creditos: 8 },
+    { nombre: "CURSO DE FORMACIÓN CRISTIANA", creditos: 4 }
+  ],
+  "5° Semestre": [
+    { nombre: "ROUTING Y SWITCHING CORPORATIVO", creditos: 10 },
+    { nombre: "SEGURIDAD EN REDES CORPORATIVAS (CCNA Security)", creditos: 10 },
+    { nombre: "COMUNICACIONES UNIFICADAS", creditos: 10 },
+    { nombre: "INNOVACIÓN EN PRODUCTOS Y SERVICIOS", creditos: 6 },
+    { nombre: "INGLÉS ELEMENTAL", creditos: 16 }
+  ],
+  "6° Semestre": [
+    { nombre: "TROUBLESHOOTING", creditos: 10 },
+    { nombre: "PROBLEMÁTICAS GLOBALES Y PROTOTIPADO", creditos: 10 },
+    { nombre: "GESTIÓN DE RIESGOS EN REDES CORPORATIVAS", creditos: 8 },
+    { nombre: "TELEPRESENCIA Y ENTORNOS INNOVADORES DE COLABORACIÓN HUMANA", creditos: 8 },
+    { nombre: "INGLÉS INTERMEDIO", creditos: 16 },
+    { nombre: "ÉTICA PROFESIONAL", creditos: 4 }
+  ],
+  "7° Semestre": [
+    { nombre: "DISEÑO DE ARQUITECTURA DE RED", creditos: 10 },
+    { nombre: "PROGRAMACIÓN Y REDES VIRTUALIZADAS (SDN-NFV)", creditos: 8 },
+    { nombre: "CONTROL Y GESTIÓN DE PROYECTOS DE CONECTIVIDAD", creditos: 12 },
+    { nombre: "INGLÉS INTERMEDIO ALTO", creditos: 16 }
+  ],
+  "8° Semestre": [
+    { nombre: "CAPSTONE", creditos: 20 },
+    { nombre: "PRÁCTICA PROFESIONAL", creditos: 20 }
+  ]
 };
 
-// Cargar malla y progreso al loguearse
-function cargarMalla(data, usuario) {
-  document.getElementById("login-form").style.display = "none";
-  document.getElementById("registro-form").style.display = "none";
-  document.getElementById("recuperar-form").style.display = "none";
-  document.getElementById("contenido-malla").style.display = "block";
-
-  document.getElementById("saludo").textContent = `👋 ¡Hola, ${data.nombreCompleto}!`;
-
-  const grid = document.getElementById("malla-grid");
-  const resumen = document.getElementById("resumen-creditos");
-  grid.innerHTML = "";
-
-  const progreso = data.progreso || {};
-  const notas = data.notas || {};
-
-  Object.keys(malla).forEach((semestre) => {
-    const columna = document.createElement("div");
-    columna.className = "semestre";
-
-    const h2 = document.createElement("h2");
-    h2.textContent = semestre;
-    columna.appendChild(h2);
-
-    let sumaNotas = 0, totalNotas = 0;
-
-    malla[semestre].forEach((ramo) => {
-      const div = document.createElement("div");
-      div.className = "ramo";
-      div.textContent = `${ramo.nombre} (${ramo.creditos})`;
-      const clave = `${semestre} - ${ramo.nombre}`;
-
-      if (progreso[clave]) div.classList.add("checked");
-
-      const input = document.createElement("input");
-      input.type = "text";
-      input.placeholder = "Nota (1-7)";
-      input.value = notas[clave] || "";
-      input.addEventListener("input", () => {
-        const valor = input.value.replace(",", ".");
-        const nota = parseFloat(valor);
-        if (!isNaN(nota) && nota >= 1 && nota <= 7) {
-          notas[clave] = nota;
-        } else {
-          delete notas[clave];
-        }
-        guardar(usuario, progreso, notas);
-        actualizarPromedios(usuario, resumen);
-      });
-      input.addEventListener("click", (e) => e.stopPropagation());
-
-      if (progreso[clave]) div.appendChild(input);
-
-      div.addEventListener("click", () => {
-        div.classList.toggle("checked");
-        const checked = div.classList.contains("checked");
-        progreso[clave] = checked;
-
-        if (checked && !div.contains(input)) div.appendChild(input);
-        else if (!checked && div.contains(input)) {
-          div.removeChild(input);
-          delete notas[clave];
-        }
-
-        guardar(usuario, progreso, notas);
-        actualizarCreditos(usuario, resumen);
-        actualizarPromedios(usuario, resumen);
-      });
-
-      columna.appendChild(div);
-    });
-
-    const promedioDiv = document.createElement("div");
-    promedioDiv.className = "promedio-semestre";
-    promedioDiv.id = `promedio-${semestre}`;
-    promedioDiv.textContent = "📘 Promedio Semestre: -";
-    columna.appendChild(promedioDiv);
-
-    grid.appendChild(columna);
-  });
-
-  actualizarCreditos(usuario, resumen);
-  actualizarPromedios(usuario, resumen);
-}
-// Guardar progreso y notas en localStorage
 function guardar(usuario, progreso, notas) {
   const data = JSON.parse(localStorage.getItem("usuario-" + usuario));
   data.progreso = progreso;
@@ -174,7 +131,6 @@ function guardar(usuario, progreso, notas) {
   localStorage.setItem("usuario-" + usuario, JSON.stringify(data));
 }
 
-// Actualizar créditos completados
 function actualizarCreditos(usuario, resumen) {
   const data = JSON.parse(localStorage.getItem("usuario-" + usuario));
   const progreso = data.progreso || {};
@@ -193,7 +149,6 @@ function actualizarCreditos(usuario, resumen) {
   resumen.innerHTML = `Créditos completados: ${completados} / ${total}<br>🎓 Promedio general: <span id="promedio-general">-</span>`;
 }
 
-// Calcular promedios
 function actualizarPromedios(usuario, resumen) {
   const data = JSON.parse(localStorage.getItem("usuario-" + usuario));
   const progreso = data.progreso || {};
@@ -229,7 +184,6 @@ function actualizarPromedios(usuario, resumen) {
   if (promedioGeneral) promedioGeneral.textContent = promedioFinal;
 }
 
-// Auto-login si ya estaba activo
 const usuarioActivo = localStorage.getItem("usuario-activo");
 if (usuarioActivo) {
   const data = JSON.parse(localStorage.getItem("usuario-" + usuarioActivo));
