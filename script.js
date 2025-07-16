@@ -1,63 +1,63 @@
 const malla = {
   "1° Semestre": [
-    { nombre: "TRANSFORMACIÓN DIGITAL", creditos: 6 },
-    { nombre: "INSTALACIÓN Y CERTIFICACIÓN DE REDES", creditos: 6 },
-    { nombre: "SOPORTE EN REDES DE ACCESO Y ANTENA", creditos: 6 },
-    { nombre: "SOPORTE COMPUTACIONAL (IT Essentials)", creditos: 6 },
-    { nombre: "NIVELACIÓN MATEMÁTICA", creditos: 6 },
-    { nombre: "HABILIDADES BÁSICAS DE COMUNICACIÓN", creditos: 6 }
+    { nombre: "TRANSFORMACIÓN DIGITAL", creditos: 8 },
+    { nombre: "INSTALACIÓN Y CERTIFICACIÓN DE REDES", creditos: 10 },
+    { nombre: "SOPORTE EN REDES DE ACCESO Y ANTENA", creditos: 8 },
+    { nombre: "SOPORTE COMPUTACIONAL (IT Essentials)", creditos: 8 },
+    { nombre: "NIVELACIÓN MATEMÁTICA", creditos: 12 },
+    { nombre: "HABILIDADES BÁSICAS DE COMUNICACIÓN", creditos: 8 }
   ],
   "2° Semestre": [
-    { nombre: "CONECTIVIDAD ESENCIAL", creditos: 6 },
-    { nombre: "INSTALACIONES DOMICILIARIAS TELCO y WIFI", creditos: 6 },
-    { nombre: "SOPORTE EN REDES DE FIBRA ÓPTICA", creditos: 6 },
-    { nombre: "SISTEMA OPERATIVO SERVIDOR", creditos: 6 },
-    { nombre: "PROGRAMACIÓN DE ALGORITMOS", creditos: 6 },
-    { nombre: "HABILIDADES DE COMUNICACIÓN EFECTIVA", creditos: 6 },
-    { nombre: "FUNDAMENTOS DE ANTROPOLOGÍA", creditos: 6 }
+    { nombre: "CONECTIVIDAD ESENCIAL", creditos: 8 },
+    { nombre: "INSTALACIONES DOMICILIARIAS TELCO y WIFI", creditos: 8 },
+    { nombre: "SOPORTE EN REDES DE FIBRA ÓPTICA", creditos: 8 },
+    { nombre: "SISTEMA OPERATIVO SERVIDOR", creditos: 8 },
+    { nombre: "PROGRAMACIÓN DE ALGORITMOS", creditos: 10 },
+    { nombre: "HABILIDADES DE COMUNICACIÓN EFECTIVA", creditos: 8 },
+    { nombre: "FUNDAMENTOS DE ANTROPOLOGÍA", creditos: 4 }
   ],
   "3° Semestre": [
-    { nombre: "ROUTING Y SWITCHING", creditos: 6 },
-    { nombre: "INTRODUCCIÓN A CIBERSEGURIDAD", creditos: 6 },
-    { nombre: "ADMINISTRACIÓN SISTEMA OPERATIVO ENTERPRISE", creditos: 6 },
+    { nombre: "ROUTING Y SWITCHING", creditos: 10 },
+    { nombre: "INTRODUCCIÓN A CIBERSEGURIDAD", creditos: 8 },
+    { nombre: "ADMINISTRACIÓN SISTEMA OPERATIVO ENTERPRISE", creditos: 10 },
     { nombre: "MENTALIDAD EMPRENDEDORA", creditos: 6 },
-    { nombre: "INGLÉS BÁSICO I", creditos: 6 },
-    { nombre: "MATEMÁTICA APLICADA", creditos: 6 },
-    { nombre: "ÉTICA PARA EL TRABAJO", creditos: 6 }
+    { nombre: "INGLÉS BÁSICO I", creditos: 8 },
+    { nombre: "MATEMÁTICA APLICADA", creditos: 8 },
+    { nombre: "ÉTICA PARA EL TRABAJO", creditos: 4 }
   ],
   "4° Semestre": [
-    { nombre: "REDES ESCALABLES Y WAN", creditos: 6 },
-    { nombre: "SOLUCIONES INALÁMBRICAS", creditos: 6 },
-    { nombre: "OPERACIONES EN CIBERSEGURIDAD (CCNA Cyber Ops)", creditos: 6 },
-    { nombre: "SERVICIOS CONVERGENTES (Voz, Video y Datos)", creditos: 6 },
-    { nombre: "INGLÉS BÁSICO II", creditos: 6 },
-    { nombre: "ESTADÍSTICA DESCRIPTIVA", creditos: 6 },
-    { nombre: "CURSO DE FORMACIÓN CRISTIANA", creditos: 6 }
+    { nombre: "REDES ESCALABLES Y WAN", creditos: 10 },
+    { nombre: "SOLUCIONES INALÁMBRICAS", creditos: 8 },
+    { nombre: "OPERACIONES EN CIBERSEGURIDAD (CCNA Cyber Ops)", creditos: 8 },
+    { nombre: "SERVICIOS CONVERGENTES (Voz, Video y Datos)", creditos: 8 },
+    { nombre: "INGLÉS BÁSICO II", creditos: 8 },
+    { nombre: "ESTADÍSTICA DESCRIPTIVA", creditos: 8 },
+    { nombre: "CURSO DE FORMACIÓN CRISTIANA", creditos: 4 }
   ],
   "5° Semestre": [
-    { nombre: "ROUTING Y SWITCHING CORPORATIVO", creditos: 6 },
-    { nombre: "SEGURIDAD EN REDES CORPORATIVAS (CCNA Security)", creditos: 6 },
-    { nombre: "COMUNICACIONES UNIFICADAS", creditos: 6 },
+    { nombre: "ROUTING Y SWITCHING CORPORATIVO", creditos: 10 },
+    { nombre: "SEGURIDAD EN REDES CORPORATIVAS (CCNA Security)", creditos: 10 },
+    { nombre: "COMUNICACIONES UNIFICADAS", creditos: 10 },
     { nombre: "INNOVACIÓN EN PRODUCTOS Y SERVICIOS", creditos: 6 },
-    { nombre: "INGLÉS ELEMENTAL", creditos: 6 }
+    { nombre: "INGLÉS ELEMENTAL", creditos: 16 }
   ],
   "6° Semestre": [
-    { nombre: "TROUBLESHOOTING", creditos: 6 },
-    { nombre: "PROBLEMÁTICAS GLOBALES Y PROTOTIPADO", creditos: 6 },
-    { nombre: "GESTIÓN DE RIESGOS EN REDES CORPORATIVAS", creditos: 6 },
-    { nombre: "TELEPRESENCIA Y ENTORNOS INNOVADORES DE COLABORACIÓN HUMANA", creditos: 6 },
-    { nombre: "INGLÉS INTERMEDIO", creditos: 6 },
-    { nombre: "ÉTICA PROFESIONAL", creditos: 6 }
+    { nombre: "TROUBLESHOOTING", creditos: 10 },
+    { nombre: "PROBLEMÁTICAS GLOBALES Y PROTOTIPADO", creditos: 10 },
+    { nombre: "GESTIÓN DE RIESGOS EN REDES CORPORATIVAS", creditos: 8 },
+    { nombre: "TELEPRESENCIA Y ENTORNOS INNOVADORES DE COLABORACIÓN HUMANA", creditos: 8 },
+    { nombre: "INGLÉS INTERMEDIO", creditos: 16 },
+    { nombre: "ÉTICA PROFESIONAL", creditos: 4 }
   ],
   "7° Semestre": [
-    { nombre: "DISEÑO DE ARQUITECTURA DE RED", creditos: 6 },
-    { nombre: "PROGRAMACIÓN Y REDES VIRTUALIZADAS (SDN-NFV)", creditos: 6 },
-    { nombre: "CONTROL Y GESTIÓN DE PROYECTOS DE CONECTIVIDAD", creditos: 6 },
-    { nombre: "INGLÉS INTERMEDIO ALTO", creditos: 6 }
+    { nombre: "DISEÑO DE ARQUITECTURA DE RED", creditos: 10 },
+    { nombre: "PROGRAMACIÓN Y REDES VIRTUALIZADAS (SDN-NFV)", creditos: 8 },
+    { nombre: "CONTROL Y GESTIÓN DE PROYECTOS DE CONECTIVIDAD", creditos: 12 },
+    { nombre: "INGLÉS INTERMEDIO ALTO", creditos: 16 }
   ],
   "8° Semestre": [
-    { nombre: "CAPSTONE", creditos: 6 },
-    { nombre: "PRÁCTICA PROFESIONAL", creditos: 6 }
+    { nombre: "CAPSTONE", creditos: 20 },
+    { nombre: "PRÁCTICA PROFESIONAL", creditos: 20 }
   ]
 };
 
@@ -71,6 +71,10 @@ function crearMalla() {
   Object.keys(malla).forEach((semestre) => {
     const columna = document.createElement("div");
     columna.className = "semestre";
+
+    const h2 = document.createElement("h2");
+    h2.textContent = semestre;
+    columna.appendChild(h2);
 
     malla[semestre].forEach((ramo) => {
       const div = document.createElement("div");
