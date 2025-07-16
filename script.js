@@ -273,3 +273,19 @@ if (usuarioActivo) {
     cargarMalla(data, usuarioActivo);
   }
 }
+function toggleTheme() {
+  const body = document.body;
+  const boton = document.querySelector(".theme-toggle");
+
+  body.classList.toggle("dark");
+  const tema = body.classList.contains("dark") ? "dark" : "light";
+  localStorage.setItem("malla-tema", tema);
+
+  boton.textContent = tema === "dark" ? "☀️ Cambiar tema" : "🌙 Cambiar tema";
+}
+
+if (localStorage.getItem("malla-tema") === "dark") {
+  document.body.classList.add("dark");
+  const boton = document.querySelector(".theme-toggle");
+  if (boton) boton.textContent = "☀️ Cambiar tema";
+}
