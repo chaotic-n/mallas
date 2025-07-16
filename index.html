@@ -6,21 +6,35 @@
   <title>Malla Ingeniería en Redes</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
 </head>
 <body>
-  <button class="theme-toggle" onclick="toggleTheme()">🌙 Cambiar tema</button>
+  <div id="tsparticles"></div>
+  <div class="overlay">
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Cambiar tema</button>
 
-  <header>
-    <h1>Malla Curricular</h1>
-    <p>Ingeniería en Conectividad y Redes · Duoc UC 2023</p>
-  </header>
+    <header>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Logo_DuocUC.svg/711px-Logo_DuocUC.svg.png" alt="Logo Duoc UC" class="logo">
+      <h1 id="saludo">Bienvenida 👋</h1>
+      <p>Tu malla curricular de Ingeniería en Conectividad y Redes</p>
+    </header>
 
-  <main class="malla-container">
-    <div class="grid" id="malla-grid"></div>
-    <div class="creditos" id="resumen-creditos">
-      Créditos completados: 0 / 442
+    <div id="form-nombre" class="form-container">
+      <h2>Ingresa tus datos</h2>
+      <input type="text" id="nombre" placeholder="Nombre" required />
+      <input type="text" id="apellido" placeholder="Apellido" required />
+      <button onclick="guardarNombre()">Ingresar</button>
     </div>
-  </main>
+
+    <main class="malla-container" id="contenido-malla" style="display:none">
+      <div class="grid" id="malla-grid"></div>
+      <div class="creditos" id="resumen-creditos">
+        Créditos completados: 0 / 442
+        <br>
+        Promedio general: <span id="promedio-general">-</span>
+      </div>
+    </main>
+  </div>
 
   <script src="script.js"></script>
 </body>
