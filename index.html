@@ -3,71 +3,60 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Malla Ingeniería en Redes</title>
+  <title>Malla Ingeniería en Redes - Login Seguro</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
 </head>
 <body>
-  <div id="tsparticles"></div>
   <div class="overlay">
     <div class="theme-toggle" onclick="toggleTheme()">🌙 Cambiar tema</div>
-
     <div class="wrapper">
 
       <header>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Logo_DuocUC.svg/711px-Logo_DuocUC.svg.png" class="logo" alt="Duoc UC" />
         <h1 id="saludo">👋 ¡Bienvenido!</h1>
-        <p>Malla curricular interactiva · Ingeniería en Conectividad y Redes</p>
+        <p>Malla curricular interactiva con sistema de usuarios</p>
       </header>
 
-      <section id="form-nombre" class="form-container">
-        <h2>Ingresa tu nombre</h2>
-        <input type="text" id="nombre" placeholder="Nombre" />
-        <input type="text" id="apellido" placeholder="Apellido" />
-        <button onclick="guardarNombre()">Ingresar</button>
+      <section id="login-form" class="form-container">
+        <h2>Iniciar sesión</h2>
+        <input type="text" id="login-user" placeholder="Usuario" />
+        <input type="password" id="login-pass" placeholder="Contraseña" />
+        <button onclick="iniciarSesion()">Ingresar</button>
+        <p><a href="#" onclick="mostrarFormulario('registro')">Crear cuenta</a> | <a href="#" onclick="mostrarFormulario('recuperar')">¿Olvidaste tu contraseña?</a></p>
+      </section>
+
+      <section id="registro-form" class="form-container" style="display:none;">
+        <h2>Crear cuenta</h2>
+        <input type="text" id="reg-nombre" placeholder="Nombre completo" />
+        <input type="email" id="reg-correo" placeholder="Correo electrónico" />
+        <input type="text" id="reg-usuario" placeholder="Nombre de usuario" />
+        <input type="password" id="reg-pass" placeholder="Contraseña" />
+        <button onclick="registrarUsuario()">Registrar</button>
+        <p><a href="#" onclick="mostrarFormulario('login')">Volver al inicio</a></p>
+      </section>
+
+      <section id="recuperar-form" class="form-container" style="display:none;">
+        <h2>Recuperar contraseña</h2>
+        <input type="text" id="rec-user" placeholder="Nombre de usuario" />
+        <input type="email" id="rec-correo" placeholder="Correo registrado" />
+        <button onclick="recuperarContrasena()">Recuperar</button>
+        <p><a href="#" onclick="mostrarFormulario('login')">Volver al inicio</a></p>
       </section>
 
       <div id="contenido-malla" style="display: none;">
+        <button id="cerrar-sesion" onclick="cerrarSesion()">🔓 Cerrar sesión</button>
         <section class="malla-container">
           <div class="grid" id="malla-grid"></div>
         </section>
-
         <div class="creditos" id="resumen-creditos">
           Créditos completados: 0 / 442<br />
           🎓 Promedio general: <span id="promedio-general">-</span>
         </div>
       </div>
+
     </div>
   </div>
 
   <script src="script.js"></script>
-
-  <script>
-    tsParticles.load("tsparticles", {
-      background: { color: { value: "transparent" } },
-      fpsLimit: 60,
-      particles: {
-        number: { value: 60 },
-        color: { value: "#865dff" },
-        shape: { type: "circle" },
-        opacity: { value: 0.3 },
-        size: { value: 4 },
-        move: {
-          enable: true,
-          speed: 1,
-          direction: "none",
-          outModes: { default: "bounce" }
-        },
-        links: {
-          enable: true,
-          distance: 120,
-          color: "#865dff",
-          opacity: 0.2,
-          width: 1
-        }
-      },
-      detectRetina: true
-    });
-  </script>
 </body>
 </html>
