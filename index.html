@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malla Ingeniería en Redes</title>
+  <style>
+    :root {
+      --bg-light: #f9f9f9;
+      --text-light: #222;
+      --bg-dark: #121212;
+      --text-dark: #f1f1f1;
+      --primary: #005DAA;
+      --card: #fff;
+      --card-dark: #1e1e1e;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      margin: 0;
+      padding: 0;
+      transition: all 0.3s ease;
+    }
+
+    body.dark {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+
+    .semestre {
+      background-color: var(--card);
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: background 0.3s ease;
+    }
+
+    body.dark .semestre {
+      background-color: var(--card-dark);
+    }
+
+    .semestre h2 {
+      margin-top: 0;
+      color: var(--primary);
+    }
+
+    .ramo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0.5rem 0;
+    }
+
+    .ramo label {
+      flex: 1;
+    }
+
+    .creditos {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--primary);
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">🌙 Cambiar tema</button>
+
+  <header>
+    <h1>Malla Curricular - Ingeniería en Conectividad y Redes</h1>
+    <p>Duoc UC - 2023</p>
+  </header>
+
+  <div class="container" id="contenedor-malla"></div>
+
+  <div class="creditos" id="resumen-creditos">
+    Créditos completados: 0 / 442
+  </div>
+
+  <script>
+    const malla = {
+      "1° Semestre": [
+        { nombre: "NIVELACIÓN MATEMÁTICA", creditos: 8 },
+        { nombre: "SOPORTE COMPUTACIONAL (IT Essentials)", creditos: 8 },
+        { nombre: "CURSO DE FORMACIÓN CRISTIANA", creditos: 4 },
+        { nombre: "HABILIDADES BÁSICAS DE COMUNICACIÓN", creditos: 4 },
+        { nombre: "INGLÉS BÁSICO I", creditos: 4 }
+      ],
+      "2° Semestre": [
+        { nombre: "MATEMÁTICA APLICADA", creditos: 8 },
+        { nombre: "SISTEMA OPERATIVO SERVIDOR", creditos: 8 },
+        { nombre: "HABILIDADES DE COMUNICACIÓN EFECTIVA", creditos: 4 },
+        { nombre: "INGLÉS BÁSICO II", creditos: 4 },
+        { nombre: "ÉTICA PARA EL TRABAJO", creditos: 4 }
+      ],
+      "3° Semestre": [
+        { nombre: "CONECTIVIDAD ESENCIAL", creditos: 8 },
+        { nombre: "ESTADÍSTICA DESCRIPTIVA", creditos: 6 },
+        { nombre: "INTRODUCCIÓN A CIBERSEGURIDAD", creditos: 6 },
+        { nombre: "FUNDAMENTOS DE ANTROPOLOGÍA", creditos: 4 },
+        { nombre: "INGLÉS ELEMENTAL", creditos: 4 }
+      ],
+      "4° Semestre": [
+        { nombre: "ROUTING Y SWITCHING", creditos: 8 },
+        { nombre: "COMUNICACIONES UNIFICADAS", creditos: 6 },
+        { nombre: "INSTALACIONES DOMICILIARIAS TELCO Y WIFI", creditos: 6 },
+        { nombre: "INNOVACIÓN EN PRODUCTOS Y SERVICIOS", creditos: 4 },
+        { nombre: "INGLÉS INTERMEDIO", creditos: 4 }
+      ],
+      "5° Semestre": [
+        { nombre: "REDES ESCALABLES Y WAN", creditos: 8 },
+        { nombre: "INSTALACIÓN Y CERTIFICACIÓN DE REDES", creditos: 6 },
+        { nombre: "CONTROL Y GESTIÓN DE PROYECTOS DE CONECTIVIDAD", creditos: 6 },
+        { nombre: "TELEPRESENCIA Y ENTORNOS DE COLABORACIÓN", creditos: 4 },
+        { nombre: "MENTALIDAD EMPRENDEDORA", creditos: 4 }
+      ],
+      "6° Semestre": [
+        { nombre: "ROUTING Y SWITCHING CORPORATIVO", creditos: 8 },
+        { nombre: "SOPORTE EN REDES DE FIBRA ÓPTICA", creditos: 6 },
+        { nombre: "SEGURIDAD EN REDES CORPORATIVAS (CCNA Security)", creditos: 6 },
+        { nombre: "DISEÑO DE ARQUITECTURA DE RED", creditos: 6 },
+        { nombre: "ÉTICA PROFESIONAL", creditos: 4 }
+      ],
+      "7° Semestre": [
+        { nombre: "TROUBLESHOOTING", creditos: 8 },
+        { nombre: "OPERACIONES EN CIBERSEGURIDAD (CCNA CyberOps)", creditos: 6 },
+        { nombre: "PROGRAMACIÓN Y REDES VIRTUALIZADAS (SDN/NFV)", creditos: 6 },
+        { nombre: "SOLUCIONES INALÁMBRICAS", creditos: 6 },
+        { nombre: "PROBLEMÁTICAS GLOBALES Y PROTOTIPADO", creditos: 4 }
+      ],
+      "8° Semestre": [
+        { nombre: "CAPSTONE", creditos: 10 },
+        { nombre: "GESTIÓN DE RIESGOS EN REDES CORPORATIVAS", creditos: 6 },
+        { nombre: "PRÁCTICA PROFESIONAL", creditos: 10 },
+        { nombre: "INGLÉS INTERMEDIO ALTO", creditos: 4 },
+        { nombre: "PROCESO DE PORTAFOLIO", creditos: 4 }
+      ]
+    };
+
+    const contenedor = document.getElementById("contenedor-malla");
+    const resumen = document.getElementById("resumen-creditos");
+
+    function crearMalla() {
+      let total = 0;
+
+      for (const [semestre, ramos] of Object.entries(malla)) {
+        const div = document.createElement("div");
+        div.className = "semestre";
+        const h2 = document.createElement("h2");
+        h2.textContent = semestre;
+        div.appendChild(h2);
+
+        ramos.forEach((ramo, i) => {
+          total += ramo.creditos;
+
+          const item = document.createElement("div");
+          item.className = "ramo";
+
+          const label = document.createElement("label");
+          label.textContent = `${ramo.nombre} (${ramo.creditos} créditos)`;
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.dataset.creditos = ramo.creditos;
+          checkbox.addEventListener("change", actualizarCreditos);
+
+          item.appendChild(label);
+          item.appendChild(checkbox);
+          div.appendChild(item);
+        });
+
+        contenedor.appendChild(div);
+      }
+
+      resumen.textContent = `Créditos completados: 0 / ${total}`;
+    }
+
+    function actualizarCreditos() {
+      const checks = document.querySelectorAll('input[type="checkbox"]');
+      let suma = 0;
+      let total = 0;
+
+      checks.forEach(chk => {
+        total += parseInt(chk.dataset.creditos);
+        if (chk.checked) suma += parseInt(chk.dataset.creditos);
+      });
+
+      resumen.textContent = `Créditos completados: ${suma} / ${total}`;
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+    }
+
+    crearMalla();
+  </script>
+</body>
+</html>
