@@ -104,15 +104,9 @@ function cargarMalla(data, usuario) {
   const progreso = data.progreso || {};
   const notas = data.notas || {};
 
-  const filaSuperior = document.createElement("div");
-  filaSuperior.className = "fila fila-superior";
-
-  const filaInferior = document.createElement("div");
-  filaInferior.className = "fila fila-inferior";
-
   const listaSemestres = Object.keys(malla);
 
-  listaSemestres.forEach((semestre, i) => {
+  listaSemestres.forEach((semestre) => {
     const columna = document.createElement("div");
     columna.className = "semestre";
 
@@ -178,15 +172,8 @@ function cargarMalla(data, usuario) {
     promedioDiv.textContent = "📘 Promedio Semestre: -";
     columna.appendChild(promedioDiv);
 
-    if (i < 4) {
-      filaSuperior.appendChild(columna);
-    } else {
-      filaInferior.appendChild(columna);
-    }
+    grid.appendChild(columna);
   });
-
-  grid.appendChild(filaSuperior);
-  grid.appendChild(filaInferior);
 
   actualizarCreditos(usuario, resumen);
   actualizarPromedios(usuario, resumen);
@@ -294,13 +281,13 @@ function actualizarPromedios(usuario, resumen) {
 
     malla[semestre].forEach((ramo) => {
       const clave = `${semestre} - ${ramo.nombre}`;
-      if (progreso[clave] && (typeof notas[clave] === "number")) {
+      if (progreso[clave] && typeof notas[clave] === "number") {
         suma += notas[clave];
         count++;
       }
     });
 
-    const promedio = count > 0 ? (suma / count).toFixed(2) : "-";
+    const promedio = count > 0 ? (suma / count).toFixed(1) : "-";
     const promedioDiv = document.getElementById(`promedio-${semestre}`);
     if (promedioDiv) promedioDiv.textContent = `📘 Promedio Semestre: ${promedio}`;
 
@@ -310,28 +297,9 @@ function actualizarPromedios(usuario, resumen) {
     }
   });
 
-  const promedioFinal = cantidadNotas > 0 ? (sumaTotal / cantidadNotas).toFixed(2) : "-";
+  const promedioFinal = cantidadNotas > 0 ? (sumaTotal / cantidadNotas).toFixed(1) : "-";
   const promedioGeneral = document.getElementById("promedio-general");
   if (promedioGeneral) promedioGeneral.textContent = promedioFinal;
-}
-
-function toggleTheme() {
-  const body = document.body;
-  const boton = document.querySelector(".theme-toggle");
-
-  body.classList.toggle("dark");
-  const tema = body.classList.contains("dark") ? "dark" : "light";
-  localStorage.setItem("malla-tema", tema);
-
-  if (boton) {
-    boton.textContent = tema === "dark" ? "☀️ Cambiar tema" : "🌙 Cambiar tema";
-  }
-}
-
-if (localStorage.getItem("malla-tema") === "dark") {
-  document.body.classList.add("dark");
-  const boton = document.querySelector(".theme-toggle");
-  if (boton) boton.textContent = "☀️ Cambiar tema";
 }
 
 const usuarioActivo = localStorage.getItem("usuario-activo");
