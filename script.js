@@ -17,14 +17,23 @@ async function registrarUsuario() {
   const usuario = document.getElementById("reg-usuario").value.trim().toLowerCase();
   const pass = document.getElementById("reg-pass").value;
 
-  if (!nombre || !correo || !usuario || !pass) return alert("Completa todos los campos");
+  if (!nombre || !correo || !usuario || !pass) {
+    return alert("Completa todos los campos");
+  }
 
   if (localStorage.getItem("usuario-" + usuario)) {
     return alert("El usuario ya existe");
   }
 
   const hash = await hashPassword(pass);
-  const data = { nombreCompleto: nombre, correo, hashPassword: hash, progreso: {}, notas: {} };
+  const data = {
+    nombreCompleto: nombre,
+    correo,
+    hashPassword: hash,
+    progreso: {},
+    notas: {}
+  };
+
   localStorage.setItem("usuario-" + usuario, JSON.stringify(data));
   alert("Cuenta creada con éxito. Ahora puedes iniciar sesión.");
   mostrarFormulario("login");
@@ -61,6 +70,25 @@ function cerrarSesion() {
   location.reload();
 }
 
+function toggleTheme() {
+  const body = document.body;
+  const boton = document.querySelector(".theme-toggle");
+
+  body.classList.toggle("dark");
+  const tema = body.classList.contains("dark") ? "dark" : "light";
+  localStorage.setItem("malla-tema", tema);
+
+  if (boton) {
+    boton.textContent = tema === "dark" ? "☀️ Cambiar tema" : "🌙 Cambiar tema";
+  }
+}
+
+if (localStorage.getItem("malla-tema") === "dark") {
+  document.body.classList.add("dark");
+  const boton = document.querySelector(".theme-toggle");
+  if (boton) boton.textContent = "☀️ Cambiar tema";
+}
+
 function cargarMalla(data, usuario) {
   document.getElementById("login-form").style.display = "none";
   document.getElementById("registro-form").style.display = "none";
@@ -76,7 +104,15 @@ function cargarMalla(data, usuario) {
   const progreso = data.progreso || {};
   const notas = data.notas || {};
 
-  Object.keys(malla).forEach((semestre) => {
+  const filaSuperior = document.createElement("div");
+  filaSuperior.className = "fila fila-superior";
+
+  const filaInferior = document.createElement("div");
+  filaInferior.className = "fila fila-inferior";
+
+  const listaSemestres = Object.keys(malla);
+
+  listaSemestres.forEach((semestre, i) => {
     const columna = document.createElement("div");
     columna.className = "semestre";
 
@@ -94,19 +130,25 @@ function cargarMalla(data, usuario) {
 
       const input = document.createElement("input");
       input.type = "text";
-      input.placeholder = "Nota (1-7)";
+      input.placeholder = "Nota (1-7 o A)";
       input.value = notas[clave] || "";
+
       input.addEventListener("input", () => {
-        const valor = input.value.replace(",", ".");
-        const nota = parseFloat(valor);
-        if (!isNaN(nota) && nota >= 1 && nota <= 7) {
-          notas[clave] = nota;
+        const valor = input.value.trim().toUpperCase().replace(",", ".");
+        if (valor === "A") {
+          notas[clave] = "A";
         } else {
-          delete notas[clave];
+          const nota = parseFloat(valor);
+          if (!isNaN(nota) && nota >= 1 && nota <= 7) {
+            notas[clave] = nota;
+          } else {
+            delete notas[clave];
+          }
         }
         guardar(usuario, progreso, notas);
         actualizarPromedios(usuario, resumen);
       });
+
       input.addEventListener("click", (e) => e.stopPropagation());
 
       if (progreso[clave]) div.appendChild(input);
@@ -136,8 +178,15 @@ function cargarMalla(data, usuario) {
     promedioDiv.textContent = "📘 Promedio Semestre: -";
     columna.appendChild(promedioDiv);
 
-    grid.appendChild(columna);
+    if (i < 4) {
+      filaSuperior.appendChild(columna);
+    } else {
+      filaInferior.appendChild(columna);
+    }
   });
+
+  grid.appendChild(filaSuperior);
+  grid.appendChild(filaInferior);
 
   actualizarCreditos(usuario, resumen);
   actualizarPromedios(usuario, resumen);
@@ -245,7 +294,7 @@ function actualizarPromedios(usuario, resumen) {
 
     malla[semestre].forEach((ramo) => {
       const clave = `${semestre} - ${ramo.nombre}`;
-      if (progreso[clave] && notas[clave]) {
+      if (progreso[clave] && (typeof notas[clave] === "number")) {
         suma += notas[clave];
         count++;
       }
@@ -266,13 +315,6 @@ function actualizarPromedios(usuario, resumen) {
   if (promedioGeneral) promedioGeneral.textContent = promedioFinal;
 }
 
-const usuarioActivo = localStorage.getItem("usuario-activo");
-if (usuarioActivo) {
-  const data = JSON.parse(localStorage.getItem("usuario-" + usuarioActivo));
-  if (data) {
-    cargarMalla(data, usuarioActivo);
-  }
-}
 function toggleTheme() {
   const body = document.body;
   const boton = document.querySelector(".theme-toggle");
@@ -281,11 +323,21 @@ function toggleTheme() {
   const tema = body.classList.contains("dark") ? "dark" : "light";
   localStorage.setItem("malla-tema", tema);
 
-  boton.textContent = tema === "dark" ? "☀️ Cambiar tema" : "🌙 Cambiar tema";
+  if (boton) {
+    boton.textContent = tema === "dark" ? "☀️ Cambiar tema" : "🌙 Cambiar tema";
+  }
 }
 
 if (localStorage.getItem("malla-tema") === "dark") {
   document.body.classList.add("dark");
   const boton = document.querySelector(".theme-toggle");
   if (boton) boton.textContent = "☀️ Cambiar tema";
+}
+
+const usuarioActivo = localStorage.getItem("usuario-activo");
+if (usuarioActivo) {
+  const data = JSON.parse(localStorage.getItem("usuario-" + usuarioActivo));
+  if (data) {
+    cargarMalla(data, usuarioActivo);
+  }
 }
