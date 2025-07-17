@@ -179,69 +179,6 @@ function cargarMalla(data, usuario) {
   actualizarPromedios(usuario, resumen);
 }
 
-const malla = {
-  "1° Semestre": [
-    { nombre: "TRANSFORMACIÓN DIGITAL", creditos: 8 },
-    { nombre: "INSTALACIÓN Y CERTIFICACIÓN DE REDES", creditos: 10 },
-    { nombre: "SOPORTE EN REDES DE ACCESO Y ANTENA", creditos: 8 },
-    { nombre: "SOPORTE COMPUTACIONAL (IT Essentials)", creditos: 8 },
-    { nombre: "NIVELACIÓN MATEMÁTICA", creditos: 12 },
-    { nombre: "HABILIDADES BÁSICAS DE COMUNICACIÓN", creditos: 8 }
-  ],
-  "2° Semestre": [
-    { nombre: "CONECTIVIDAD ESENCIAL", creditos: 8 },
-    { nombre: "INSTALACIONES DOMICILIARIAS TELCO y WIFI", creditos: 8 },
-    { nombre: "SOPORTE EN REDES DE FIBRA ÓPTICA", creditos: 8 },
-    { nombre: "SISTEMA OPERATIVO SERVIDOR", creditos: 8 },
-    { nombre: "PROGRAMACIÓN DE ALGORITMOS", creditos: 10 },
-    { nombre: "HABILIDADES DE COMUNICACIÓN EFECTIVA", creditos: 8 },
-    { nombre: "FUNDAMENTOS DE ANTROPOLOGÍA", creditos: 4 }
-  ],
-  "3° Semestre": [
-    { nombre: "ROUTING Y SWITCHING", creditos: 10 },
-    { nombre: "INTRODUCCIÓN A CIBERSEGURIDAD", creditos: 8 },
-    { nombre: "ADMINISTRACIÓN SISTEMA OPERATIVO ENTERPRISE", creditos: 10 },
-    { nombre: "MENTALIDAD EMPRENDEDORA", creditos: 6 },
-    { nombre: "INGLÉS BÁSICO I", creditos: 8 },
-    { nombre: "MATEMÁTICA APLICADA", creditos: 8 },
-    { nombre: "ÉTICA PARA EL TRABAJO", creditos: 4 }
-  ],
-  "4° Semestre": [
-    { nombre: "REDES ESCALABLES Y WAN", creditos: 10 },
-    { nombre: "SOLUCIONES INALÁMBRICAS", creditos: 8 },
-    { nombre: "OPERACIONES EN CIBERSEGURIDAD (CCNA Cyber Ops)", creditos: 8 },
-    { nombre: "SERVICIOS CONVERGENTES (Voz, Video y Datos)", creditos: 8 },
-    { nombre: "INGLÉS BÁSICO II", creditos: 8 },
-    { nombre: "ESTADÍSTICA DESCRIPTIVA", creditos: 8 },
-    { nombre: "CURSO DE FORMACIÓN CRISTIANA", creditos: 4 }
-  ],
-  "5° Semestre": [
-    { nombre: "ROUTING Y SWITCHING CORPORATIVO", creditos: 10 },
-    { nombre: "SEGURIDAD EN REDES CORPORATIVAS (CCNA Security)", creditos: 10 },
-    { nombre: "COMUNICACIONES UNIFICADAS", creditos: 10 },
-    { nombre: "INNOVACIÓN EN PRODUCTOS Y SERVICIOS", creditos: 6 },
-    { nombre: "INGLÉS ELEMENTAL", creditos: 16 }
-  ],
-  "6° Semestre": [
-    { nombre: "TROUBLESHOOTING", creditos: 10 },
-    { nombre: "PROBLEMÁTICAS GLOBALES Y PROTOTIPADO", creditos: 10 },
-    { nombre: "GESTIÓN DE RIESGOS EN REDES CORPORATIVAS", creditos: 8 },
-    { nombre: "TELEPRESENCIA Y ENTORNOS INNOVADORES DE COLABORACIÓN HUMANA", creditos: 8 },
-    { nombre: "INGLÉS INTERMEDIO", creditos: 16 },
-    { nombre: "ÉTICA PROFESIONAL", creditos: 4 }
-  ],
-  "7° Semestre": [
-    { nombre: "DISEÑO DE ARQUITECTURA DE RED", creditos: 10 },
-    { nombre: "PROGRAMACIÓN Y REDES VIRTUALIZADAS (SDN-NFV)", creditos: 8 },
-    { nombre: "CONTROL Y GESTIÓN DE PROYECTOS DE CONECTIVIDAD", creditos: 12 },
-    { nombre: "INGLÉS INTERMEDIO ALTO", creditos: 16 }
-  ],
-  "8° Semestre": [
-    { nombre: "CAPSTONE", creditos: 20 },
-    { nombre: "PRÁCTICA PROFESIONAL", creditos: 20 }
-  ]
-};
-
 function guardar(usuario, progreso, notas) {
   const data = JSON.parse(localStorage.getItem("usuario-" + usuario));
   data.progreso = progreso;
@@ -289,7 +226,21 @@ function actualizarPromedios(usuario, resumen) {
 
     const promedio = count > 0 ? (suma / count).toFixed(1) : "-";
     const promedioDiv = document.getElementById(`promedio-${semestre}`);
-    if (promedioDiv) promedioDiv.textContent = `📘 Promedio Semestre: ${promedio}`;
+    if (promedioDiv) {
+      promedioDiv.textContent = `📘 Promedio Semestre: ${promedio}`;
+      promedioDiv.classList.remove("promedio-rojo", "promedio-azul", "promedio-negro");
+
+      if (promedio !== "-") {
+        const valor = parseFloat(promedio);
+        if (valor < 4) {
+          promedioDiv.classList.add("promedio-rojo");
+        } else if (valor > 4) {
+          promedioDiv.classList.add("promedio-azul");
+        } else {
+          promedioDiv.classList.add("promedio-negro");
+        }
+      }
+    }
 
     if (count > 0) {
       sumaTotal += suma;
@@ -299,7 +250,21 @@ function actualizarPromedios(usuario, resumen) {
 
   const promedioFinal = cantidadNotas > 0 ? (sumaTotal / cantidadNotas).toFixed(1) : "-";
   const promedioGeneral = document.getElementById("promedio-general");
-  if (promedioGeneral) promedioGeneral.textContent = promedioFinal;
+  if (promedioGeneral) {
+    promedioGeneral.textContent = promedioFinal;
+    promedioGeneral.classList.remove("promedio-rojo", "promedio-azul", "promedio-negro");
+
+    if (promedioFinal !== "-") {
+      const valor = parseFloat(promedioFinal);
+      if (valor < 4) {
+        promedioGeneral.classList.add("promedio-rojo");
+      } else if (valor > 4) {
+        promedioGeneral.classList.add("promedio-azul");
+      } else {
+        promedioGeneral.classList.add("promedio-negro");
+      }
+    }
+  }
 }
 
 const usuarioActivo = localStorage.getItem("usuario-activo");
