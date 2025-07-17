@@ -117,8 +117,9 @@ function cargarMalla(data, usuario) {
     malla[semestre].forEach((ramo) => {
       const div = document.createElement("div");
       div.className = "ramo";
-      div.textContent = `${ramo.nombre} (${ramo.creditos})`;
       const clave = `${semestre} - ${ramo.nombre}`;
+      const notaTexto = notas[clave] ? `| ${notas[clave]}` : "| -";
+      div.textContent = `${ramo.nombre} | ${ramo.creditos} créditos ${notaTexto}`;
 
       if (progreso[clave]) div.classList.add("checked");
 
@@ -177,6 +178,7 @@ function cargarMalla(data, usuario) {
 
   actualizarCreditos(usuario, resumen);
   actualizarPromedios(usuario, resumen);
+  document.querySelector(".malla-container").classList.add("visible");
 }
 
 function guardar(usuario, progreso, notas) {
