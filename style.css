@@ -40,21 +40,30 @@ header {
   padding: 20px;
 }
 
-.theme-toggle {
+.top-buttons {
   position: fixed;
   top: 15px;
   right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.theme-toggle,
+.logout-button {
   cursor: pointer;
   background: var(--accent);
   color: white;
   padding: 10px 15px;
   border-radius: 30px;
   font-size: 14px;
-  z-index: 1000;
   transition: background 0.3s;
+  white-space: nowrap;
+  user-select: none;
 }
 
-.theme-toggle:hover {
+.theme-toggle:hover,
+.logout-button:hover {
   background: var(--accent-soft);
 }
 
@@ -96,7 +105,6 @@ body.dark .form-container {
   background-color: var(--accent-soft);
 }
 
-/* Grid de semestres: 3 columnas responsive */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -104,6 +112,17 @@ body.dark .form-container {
   justify-items: center;
   margin-bottom: 100px;
   padding: 0 20px;
+}
+
+/* Animación de malla al aparecer */
+.malla-container {
+  opacity: 0;
+  filter: blur(6px);
+  transition: opacity 0.8s ease, filter 0.8s ease;
+}
+.malla-container.visible {
+  opacity: 1;
+  filter: blur(0);
 }
 
 .semestre {
@@ -136,6 +155,12 @@ body.dark .semestre {
   position: relative;
   font-size: 14px;
   transition: 0.2s;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 body.dark .ramo {
@@ -196,7 +221,6 @@ a:hover {
   text-decoration: underline;
 }
 
-/* 🔁 Fondo animado estilo circuitos (solo CSS) */
 body::before {
   content: "";
   position: fixed;
@@ -224,7 +248,6 @@ body.dark::before {
   opacity: 0.35;
 }
 
-/* Animación del fondo */
 @keyframes fondoAnimado {
   0% {
     background-position: 0 0, 0 0, 0 0, 0 0;
@@ -234,11 +257,26 @@ body.dark::before {
   }
 }
 
-/* 🌚 Bloques oscuros translúcidos */
 .wrapper,
 .form-container,
 .semestre,
 .creditos {
   background-color: rgba(18, 24, 41, 0.8) !important;
   color: white !important;
+}
+
+.promedio-rojo {
+  color: #e74c3c;
+  font-weight: bold;
+}
+.promedio-azul {
+  color: #3498db;
+  font-weight: bold;
+}
+.promedio-negro {
+  color: #111;
+  font-weight: bold;
+}
+body.dark .promedio-negro {
+  color: #ccc;
 }
