@@ -193,20 +193,45 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Fondo animado con GIF */
+/* 🔁 Fondo animado estilo circuitos (sin imágenes) */
 body::before {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: url('fondo-redes.gif') no-repeat center center fixed;
-  background-size: cover;
-  opacity: 0.15;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(90deg, rgba(123, 97, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(123, 97, 255, 0.05) 1px, transparent 1px),
+    radial-gradient(circle, rgba(123, 97, 255, 0.06) 2px, transparent 3px),
+    radial-gradient(circle, rgba(123, 97, 255, 0.06) 1px, transparent 2px);
+  background-size:
+    60px 60px,
+    60px 60px,
+    200px 200px,
+    100px 100px;
+  animation: fondoAnimado 30s linear infinite;
   z-index: -1;
+  pointer-events: none;
+  opacity: 0.25;
+  transition: opacity 0.5s ease;
 }
 
+body.dark::before {
+  opacity: 0.35;
+}
+
+/* Animación del fondo */
+@keyframes fondoAnimado {
+  0% {
+    background-position: 0 0, 0 0, 0 0, 0 0;
+  }
+  100% {
+    background-position: 100px 200px, 200px 100px, 100px 100px, 50px 50px;
+  }
+}
+
+/* Agrupación horizontal de semestres */
 .fila {
   display: flex;
   flex-wrap: wrap;
@@ -220,6 +245,7 @@ body::before {
   margin-bottom: 40px;
 }
 
+/* 🌚 Bloques oscuros translúcidos */
 .wrapper,
 .form-container,
 .semestre,
