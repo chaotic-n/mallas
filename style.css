@@ -96,19 +96,22 @@ body.dark .form-container {
   background-color: var(--accent-soft);
 }
 
+/* Grid de semestres: 3 columnas responsive */
 .grid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
-  justify-content: center;
+  justify-items: center;
   margin-bottom: 100px;
+  padding: 0 20px;
 }
 
 .semestre {
   background: var(--card-light);
   padding: 20px;
   border-radius: 12px;
-  width: 320px;
+  width: 100%;
+  max-width: 340px;
   box-shadow: 0 0 8px rgba(0,0,0,0.04);
   transition: 0.3s;
 }
@@ -193,7 +196,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* 🔁 Fondo animado estilo circuitos (sin imágenes) */
+/* 🔁 Fondo animado estilo circuitos (solo CSS) */
 body::before {
   content: "";
   position: fixed;
@@ -229,20 +232,6 @@ body.dark::before {
   100% {
     background-position: 100px 200px, 200px 100px, 100px 100px, 50px 50px;
   }
-}
-
-/* Agrupación horizontal de semestres */
-.fila {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-.fila-superior,
-.fila-inferior {
-  margin-bottom: 40px;
 }
 
 /* 🌚 Bloques oscuros translúcidos */
